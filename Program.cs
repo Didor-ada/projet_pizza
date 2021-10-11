@@ -9,8 +9,12 @@ namespace projet_pizza
     {
         string nom;
         public float prix { get; private set; }
-        bool vegetarienne;
-        List<string> ingredients;
+        public bool vegetarienne { get; private set; }
+        public List<string> ingredients { get; private set; }
+        /*  public override string ToString()
+        {
+            return base.ToString();
+        }*/
 
         public pizza(string nom, float prix, bool vegetarienne, List<string> ingredients)
         {
@@ -76,40 +80,20 @@ namespace projet_pizza
                new pizza("complète", 9.5f, false, new List<string> { "jambon", "oeuf", "fromage" }),
             };
 
-            // pizzas = pizzas.OrderBy(p => p.prix).ToList(); / OrderByDescending pour avoir de la plus chère à la moins chère
+            // garder uniquement les pizzas végétariennes
+            // pizzas = pizzas.Where(p => p.vegetarienne).ToList();
 
-            float prixMin, prixMax;
-            pizza pizzaPrixMin = null;
-            pizza pizzaPrixMax = null;
+            // pizzas.Select(p => p.ToString());
 
-            pizzaPrixMin = pizzas[0];
-            pizzaPrixMax = pizzas[0];
 
-            foreach (var pizza in pizzas)
-            {
-                if(pizza.prix < pizzaPrixMin.prix)
-                {
-                    prixMin = pizza.prix;
-                    pizzaPrixMin = pizza;
-                }
-                if (pizza.prix > pizzaPrixMax.prix)
-                {
-                    prixMax = pizza.prix;
-                    pizzaPrixMax = pizza;
-                }
-            }
+            // pizzas.Where(p => p.ingredients.Any(i => i.ToLower().Contains("tomate"))).ToList().ForEach(p => p.Afficher()); / version qui inclut le foreach qui permet l'affichage
 
+
+            pizzas = pizzas.Where(p => p.ingredients.Where(i => i.ToLower().Contains("tomate")).ToList().Count > 0).ToList(); // > 0 veut dire si il y en a au moins 1
             foreach(var pizza in pizzas)
             {
                 pizza.Afficher();
             }
-
-            Console.WriteLine();
-            Console.WriteLine("La pizza la moins chère est :");
-            pizzaPrixMin.Afficher();
-            Console.WriteLine();
-            Console.WriteLine("La pizza la plus chère est :");
-            pizzaPrixMax.Afficher();
         }
     }
 }
