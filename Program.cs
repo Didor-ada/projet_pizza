@@ -8,7 +8,7 @@ namespace projet_pizza
     class pizza
     {
         string nom;
-        float prix;
+        public float prix { get; private set; }
         bool vegetarienne;
         List<string> ingredients;
 
@@ -76,10 +76,40 @@ namespace projet_pizza
                new pizza("complète", 9.5f, false, new List<string> { "jambon", "oeuf", "fromage" }),
             };
 
+            // pizzas = pizzas.OrderBy(p => p.prix).ToList(); / OrderByDescending pour avoir de la plus chère à la moins chère
+
+            float prixMin, prixMax;
+            pizza pizzaPrixMin = null;
+            pizza pizzaPrixMax = null;
+
+            pizzaPrixMin = pizzas[0];
+            pizzaPrixMax = pizzas[0];
+
+            foreach (var pizza in pizzas)
+            {
+                if(pizza.prix < pizzaPrixMin.prix)
+                {
+                    prixMin = pizza.prix;
+                    pizzaPrixMin = pizza;
+                }
+                if (pizza.prix > pizzaPrixMax.prix)
+                {
+                    prixMax = pizza.prix;
+                    pizzaPrixMax = pizza;
+                }
+            }
+
             foreach(var pizza in pizzas)
             {
                 pizza.Afficher();
             }
+
+            Console.WriteLine();
+            Console.WriteLine("La pizza la moins chère est :");
+            pizzaPrixMin.Afficher();
+            Console.WriteLine();
+            Console.WriteLine("La pizza la plus chère est :");
+            pizzaPrixMax.Afficher();
         }
     }
 }
