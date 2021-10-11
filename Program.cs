@@ -27,8 +27,16 @@ namespace projet_pizza
 
             string nomAfficher = FormatPremiereLettreMajuscules(nom);
 
+            /*var ingredientsAfficher = new List<string>();
+            foreach(var ingredient in ingredients)
+            {
+                ingredientsAfficher.Add(FormatPremiereLettreMajuscules(ingredient));
+            }*/
+
+            var ingredientsAfficher = ingredients.Select(i => FormatPremiereLettreMajuscules(i)).ToList(); // collection.Select pour transformer nos éléments directement
+
             Console.WriteLine(nomAfficher + badgeVegetarienne + " - " + prix + "€");
-            Console.WriteLine(string.Join(", ", ingredients));
+            Console.WriteLine(string.Join(", ", ingredientsAfficher));
             Console.WriteLine();
         }
 
@@ -61,7 +69,7 @@ namespace projet_pizza
 
             var pizzas = new List<pizza>() {
                new pizza("4 fromages", 11.5f, true, new List<string> { "cantal", "mozzarella", "fromage de chèvre", "gruyère" }),
-               new pizza("indienne", 10.5f, false, new List<string> { "curry", "mozzarella", "poulet de chèvre", "poivron", "oignon", "coriandre" }),
+               new pizza("indienne", 10.5f, false, new List<string> { "curry", "mozzarella", "poulet", "poivron", "oignon", "coriandre" }),
                new pizza("mexicaine", 13f, false, new List<string> { "boeuf", "mozzarella", "maïs", "tomates", "oignon", "coriandre" }),
                new pizza("margherita", 8f, true, new List<string> { "sauce tomate", "mozzarella", "basilic" }),
                new pizza("calzone", 12f, false, new List<string> { "tomate", "jambon", "persil", "oignon" }),
