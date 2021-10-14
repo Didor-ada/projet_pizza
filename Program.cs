@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace projet_pizza
@@ -46,7 +48,7 @@ namespace projet_pizza
 
     class Pizza
     {
-        protected string nom;
+        public string nom { get; protected set; }
         public float prix { get; protected set; }
         public bool vegetarienne { get; private set; }
         public List<string> ingredients { get; protected set; }
@@ -117,9 +119,13 @@ namespace projet_pizza
                new Pizza("margherita", 8f, true, new List<string> { "sauce tomate", "mozzarella", "basilic" }),
                new Pizza("calzone", 12f, false, new List<string> { "tomate", "jambon", "persil", "oignon" }),
                new Pizza("complète", 9.5f, false, new List<string> { "jambon", "oeuf", "fromage" }),
-               new PizzaPersonnalisee(),
-               new PizzaPersonnalisee()
+               // new PizzaPersonnalisee(),
+               // new PizzaPersonnalisee()
             };
+
+            string json = JsonConvert.SerializeObject(pizzas);
+            // Console.WriteLine(json);
+            File.WriteAllText("pizzas.json", json);
 
             // garder uniquement les pizzas végétariennes
             // pizzas = pizzas.Where(p => p.vegetarienne).ToList();
