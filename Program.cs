@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 
 namespace projet_pizza
 {
@@ -156,16 +157,53 @@ namespace projet_pizza
             File.WriteAllText(filename, json);
         }
 
+        static List<Pizza> GetPizzasFromUrl(string url)
+        {
+            var webclient = new WebClient();
+            string json = null;
+            try
+            {
+                json = webclient.DownloadString(url);
+            }
+            catch
+            {
+                Console.WriteLine("Erreur réseau");
+                return null;
+            }
+
+
+
+            List<Pizza> pizzas = null;
+            try
+            {
+                pizzas = JsonConvert.DeserializeObject<List<Pizza>>(json);
+            }
+            catch
+            {
+                Console.WriteLine("Erreur : Les données JSON ne sont pas valides");
+                return null;
+            }
+
+            return pizzas;
+        }
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             var filename = "pizzas.json";
 
-            var pizzas = GetPizzasFromFile(filename);
+            // var pizzas = GetPizzasFromFile(filename);
 
-            foreach (var pizza in pizzas)
+            // Https://codeavecjonathan.com/res/pizzas2.json
+
+            var pizzas = GetPizzasFromUrl("https://codeavecjonathan.com/res/pizzas2.json");
+
+            if (pizzas != null)
             {
-                pizza.Afficher();
+                foreach (var pizza in pizzas)
+                {
+                    pizza.Afficher();
+                }
             }
         }
     }
