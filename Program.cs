@@ -105,15 +105,10 @@ namespace projet_pizza
 
     class Program
     {
-        static void Main(string[] args)
+
+        static List<Pizza> GetPizzasFromCode()
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-            var filename = "pizzas.json";
-
-            /*var pizza1 = new pizza("4 fromages", 11.5f, true);
-            pizza1.afficher();*/
-
-            /*var pizzas = new List<Pizza>() {
+            var pizzas = new List<Pizza>() {
                new Pizza("4 fromages", 11.5f, true, new List<string> { "cantal", "mozzarella", "fromage de chèvre", "gruyère" }),
                new Pizza("indienne", 10.5f, false, new List<string> { "curry", "mozzarella", "poulet", "poivron", "oignon", "coriandre" }),
                new Pizza("mexicaine", 13f, false, new List<string> { "boeuf", "mozzarella", "maïs", "tomates", "oignon", "coriandre" }),
@@ -123,12 +118,12 @@ namespace projet_pizza
                // new PizzaPersonnalisee(),
                // new PizzaPersonnalisee()
             };
+            return pizzas;
+        }
 
-            string json = JsonConvert.SerializeObject(pizzas);
-            // Console.WriteLine(json);
-            File.WriteAllText("pizzas.json", json);*/
-
-            string json= null;
+        static List<Pizza> GetPizzasFromFile(string filename)
+        {
+            string json = null;
             try
             {
                 json = File.ReadAllText(filename);
@@ -136,7 +131,7 @@ namespace projet_pizza
             catch
             {
                 Console.WriteLine("Erreur de lecture du fichier : " + filename);
-                return;
+                return null;
             }
 
 
@@ -149,9 +144,24 @@ namespace projet_pizza
             catch
             {
                 Console.WriteLine("Erreur : Les données JSON ne sont pas valides");
-                return;
+                return null;
             }
 
+            return pizzas;
+        }
+
+        static void GenerateJsonFile(List<Pizza> pizzas, string filename)
+        {
+            string json = JsonConvert.SerializeObject(pizzas);
+            File.WriteAllText(filename, json);
+        }
+
+        static void Main(string[] args)
+        {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            var filename = "pizzas.json";
+
+            var pizzas = GetPizzasFromFile(filename);
 
             foreach (var pizza in pizzas)
             {
