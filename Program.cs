@@ -108,11 +108,12 @@ namespace projet_pizza
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+            var filename = "pizzas.json";
 
             /*var pizza1 = new pizza("4 fromages", 11.5f, true);
             pizza1.afficher();*/
 
-            var pizzas = new List<Pizza>() {
+            /*var pizzas = new List<Pizza>() {
                new Pizza("4 fromages", 11.5f, true, new List<string> { "cantal", "mozzarella", "fromage de chèvre", "gruyère" }),
                new Pizza("indienne", 10.5f, false, new List<string> { "curry", "mozzarella", "poulet", "poivron", "oignon", "coriandre" }),
                new Pizza("mexicaine", 13f, false, new List<string> { "boeuf", "mozzarella", "maïs", "tomates", "oignon", "coriandre" }),
@@ -125,19 +126,34 @@ namespace projet_pizza
 
             string json = JsonConvert.SerializeObject(pizzas);
             // Console.WriteLine(json);
-            File.WriteAllText("pizzas.json", json);
+            File.WriteAllText("pizzas.json", json);*/
 
-            // garder uniquement les pizzas végétariennes
-            // pizzas = pizzas.Where(p => p.vegetarienne).ToList();
+            string json= null;
+            try
+            {
+                json = File.ReadAllText(filename);
+            }
+            catch
+            {
+                Console.WriteLine("Erreur de lecture du fichier : " + filename);
+                return;
+            }
 
-            // pizzas.Select(p => p.ToString());
+
+            // Console.WriteLine(json);
+            List<Pizza> pizzas = null;
+            try
+            {
+                pizzas = JsonConvert.DeserializeObject<List<Pizza>>(json);
+            }
+            catch
+            {
+                Console.WriteLine("Erreur : Les données JSON ne sont pas valides");
+                return;
+            }
 
 
-            // pizzas.Where(p => p.ingredients.Any(i => i.ToLower().Contains("tomate"))).ToList().ForEach(p => p.Afficher()); / version qui inclut le foreach qui permet l'affichage
-
-
-            // pizzas = pizzas.Where(p => p.ingredients.Where(i => i.ToLower().Contains("tomate")).ToList().Count > 0).ToList(); // > 0 veut dire si il y en a au moins 1
-            foreach(var pizza in pizzas)
+            foreach (var pizza in pizzas)
             {
                 pizza.Afficher();
             }
